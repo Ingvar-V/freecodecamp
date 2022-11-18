@@ -15,10 +15,10 @@ do
   if [[ $WINNER != "winner" ]]
   then
     # get team_id 
-    TEAM_ID=$($PSQL "SELECT team_id FROM teams WHERE name='$WINNER'")
+    WINNER_TEAM_ID=$($PSQL "SELECT team_id FROM teams WHERE name='$WINNER'")
 
     # if not found
-    if [[ -z $TEAM_ID ]]
+    if [[ -z $WINNER_TEAM_ID ]]
     then
       # insert team name
       INSERT_TEAM_NAME=$($PSQL "INSERT INTO teams(name) VALUES('$WINNER')")
@@ -27,16 +27,16 @@ do
         echo Inserted into teams, $WINNER
       fi
       # get winner id
-      WINNER_ID=$($PSQL "SELECT team_id FROM teams WHERE name='$WINNER'")
+      WINNER_TEAM_ID=$($PSQL "SELECT team_id FROM teams WHERE name='$WINNER'")
     fi
   fi
   if [[ $OPPONENT != "opponent" ]]
   then
     # get team_id 
-    TEAM_ID=$($PSQL "SELECT team_id FROM teams WHERE name='$OPPONENT'")
+    OPPONENT_TEAM_ID=$($PSQL "SELECT team_id FROM teams WHERE name='$OPPONENT'")
 
     # if not found
-    if [[ -z $TEAM_ID ]]
+    if [[ -z $OPPONENT_TEAM_ID ]]
     then
       # insert team name
       INSERT_TEAM_NAME=$($PSQL "INSERT INTO teams(name) VALUES('$OPPONENT')")
@@ -45,16 +45,15 @@ do
         echo Inserted into teams, $OPPONENT
       fi
       # get opponent id
-      OPPONENT_ID=$($PSQL "SELECT team_id FROM teams WHERE name='$OPPONENT'")
+      OPPONENT_TEAM_ID=$($PSQL "SELECT team_id FROM teams WHERE name='$OPPONENT'")
     fi
   fi
   if [[ $YEAR != "year" ]]
-#    if [[ $ROUND != "round" ]]
-      then
-      INSERT_GAME=$($PSQL "INSERT INTO games(year, round, winner_goals, opponent_goals, winner_id, opponent_id) VALUES('$YEAR', '$ROUND', '$WINNER_GOALS', '$OPPONENT_GOALS', '$WINNER_ID', "$OPPONENT_ID")")
+    then
+      INSERT_GAME=$($PSQL "INSERT INTO games(year, round, winner_goals, opponent_goals, winner_id, opponent_id) VALUES('$YEAR', '$ROUND', '$WINNER_GOALS', '$OPPONENT_GOALS', '$WINNER_TEAM_ID', "$OPPONENT_TEAM_ID")")
       if [[ $INSERT_GAME == 'INSERT 0 1' ]]
-       then echo Inserted into games, $YEAR $ROUND $WINNER_GOALS $OPPONENT_GOALS $WINNER_ID $OPPONENT_ID
+       then echo Inserted into games, $YEAR $ROUND $WINNER_GOALS $OPPONENT_GOALS $WINNER_TEAM_ID $OPPONENT_TEAM_ID
       fi
-#    fi
   fi
+
 done
