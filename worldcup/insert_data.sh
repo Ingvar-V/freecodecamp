@@ -48,13 +48,11 @@ do
       OPPONENT_ID=$($PSQL "SELECT team_id FROM teams WHERE name='$OPPONENT'")
     fi
   fi
-    if [[ $YEAR != "year" OR $ROUND != "round" OR  $WINNER_GOALS != winner_goals OR $OPPONENT_GOALS != "opponent_goals"]]
+    if [[ $YEAR != "year" ]]
     then
       INSERT_GAME=$($PSQL "INSERT INTO games(year, round, winner_goals, opponent_goals, winner_id, opponent_id) VALUES('$YEAR', '$ROUND', '$WINNER_GOALS', '$OPPONENT_GOALS', '$WINNER_ID', "$OPPONENT_ID")")
-      if if [[ $INSERT_GAME == 'INSERT 0 1' ]]
+      if [[ $INSERT_GAME == 'INSERT 0 1' ]]
       then echo Inserted into games, $YEAR $ROUND $WINNER_GOALS $OPPONENT_GOALS $OPPONENT
       fi
     fi
-
-
 done
